@@ -22,5 +22,25 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 
+# dependencies
+grocery-list-app/node_modules
+grocery-list-app/.pnp
+grocery-list-app/.pnp.js
 
-node_modules
+# testing
+grocery-list-app/coverage
+
+# production
+grocery-list-app/build
+
+# misc
+grocery-list-app/.DS_Store
+grocery-list-app/.env.local
+grocery-list-app/.env.development.local
+grocery-list-app/.env.test.local
+grocery-list-app/.env.production.local
+
+grocery-list-app/npm-debug.log*
+grocery-list-app/yarn-debug.log*
+grocery-list-app/yarn-error.log*
+

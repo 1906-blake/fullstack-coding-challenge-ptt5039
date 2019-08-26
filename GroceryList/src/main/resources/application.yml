@@ -1,0 +1,24 @@
+server:
+  port: 8012
+  
+spring:
+  application:
+    name: grocerylist-api
+
+  datasource:
+    driverClassName: org.postgresql.Driver
+    initialization-mode: NEVER
+    password: ${GROCERY_PASSWORD}
+    url: jdbc:postgresql://${GROCERY_URL}:5432/${GROCERY_NAME}
+    username: ${GROCERY_USERNAME}
+    
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        default_schema: ${GROCERY_SCHEMA}
+    show-sql: false
+    

@@ -69,7 +69,6 @@ export class GroceryListView extends React.Component<RouteComponentProps, IState
             })
 
             const lists = await resp.json();
-            console.log(lists)
 
             if (lists.length === 0) {
                 this.setState({

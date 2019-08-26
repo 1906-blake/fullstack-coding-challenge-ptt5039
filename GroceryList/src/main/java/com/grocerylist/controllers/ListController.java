@@ -29,6 +29,7 @@ public class ListController {
 		return listService.findAll(page, limit);
 	}
 	
+	
 	@GetMapping("{listId}")
 	public GroceryList getOne(@PathVariable int listId) {
 		return listService.getOne(listId);

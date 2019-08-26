@@ -35,9 +35,9 @@ public class ListService {
 
 	@Transactional
 	public GroceryList addItemToList(int listId, GroceryItem item) {
-		GroceryList list = listRepo.getOne(listId);
 		GroceryItem itemFromDb = itemRepo.getOne(item.getGroceryItemId());
-		list.getItems().add(itemFromDb);
+		GroceryList list = listRepo.getOne(listId);
+		itemFromDb.setGroceryItemList(list);
 		return list;
 	}
 
@@ -63,5 +63,7 @@ public class ListService {
 	public GroceryList getOne(int listId) {
 		return listRepo.getOne(listId);
 	}
+
+	
 
 }

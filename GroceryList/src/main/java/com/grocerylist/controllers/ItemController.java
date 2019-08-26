@@ -1,5 +1,7 @@
 package com.grocerylist.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +25,11 @@ public class ItemController {
 	@GetMapping
 	public Page<GroceryItem> findAll(@RequestParam int page, @RequestParam int limit) {
 		return itemService.findAll(page, limit);
+	}
+	
+	@GetMapping("no-list")
+	public List<GroceryItem> findAllWithoutList(){
+		return itemService.findAllWithoutList();
 	}
 	
 	@PostMapping

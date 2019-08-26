@@ -3,6 +3,7 @@ import { Input, Button, Table, Label, Form, Card, CardHeader, CardBody } from 'r
 import { RouteComponentProps } from 'react-router';
 import { GroceryType } from '../../models/grocery-type';
 import { GroceryList } from '../../models/grocery-list';
+import { GroceryItem } from '../../models/grocery-item';
 
 interface RouteParam{
     listId: any
@@ -11,6 +12,7 @@ interface RouteParam{
 interface IState {
     list?: GroceryList,
     types: GroceryType[],
+    items: GroceryItem[],
     groceryItemName: string,
     errorMessage: string,
     errorCreateMessage: string,
@@ -23,6 +25,7 @@ export class SingleGroceryListView extends React.Component<RouteComponentProps<R
         super(props);
         this.state = {
             types: [],
+            items: [],
             groceryItemName: '',
             errorMessage: '',
             errorCreateMessage: '',
@@ -32,6 +35,8 @@ export class SingleGroceryListView extends React.Component<RouteComponentProps<R
         const {listId} = this.props.match.params
         this.getListById(listId);
         this.getTypes();
+        this.getItems();
+        this.getItems = this.getItems.bind(this);
         this.getListById = this.getListById.bind(this);
         this.handleDropdown = this.handleDropdown.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -40,6 +45,20 @@ export class SingleGroceryListView extends React.Component<RouteComponentProps<R
     componentDidMount() {
         const {listId} = this.props.match.params
         this.getListById(listId);
+        this.getItems();
+    }
+
+    getItems = async () => {
+        const resp = await fetch('http://localhost:8012/grocery-items/no-list', {
+            credentials: 'include'
+        })
+
+        const items = await resp.json();
+
+        this.setState({
+            ...this.state,
+            items
+        })
     }
 
     getTypes = async () => {
@@ -135,6 +154,32 @@ export class SingleGroceryListView extends React.Component<RouteComponentProps<R
                 ...this.state,
                 list: newList
             })
+            this.getItems();
+        }
+    }
+
+    addItem = async (itemId: any) => {
+        const {listId} = this.props.match.params
+        const item ={
+            groceryItemId: itemId
+        }
+        const resp = await fetch(`http://localhost:8012/grocery-lists/${listId}/items`,{
+            credentials: 'include',
+            body: JSON.stringify(item),
+            headers: {
+                'content-type': 'application/json'
+            },
+            method: 'POST'
+        })
+
+        const list = await resp.json();
+
+        console.log(list)
+        if(!list) {
+            
+        }else{
+            this.getListById(listId);
+            this.getItems();
         }
     }
 
@@ -142,6 +187,7 @@ export class SingleGroceryListView extends React.Component<RouteComponentProps<R
         const errorMessage = this.state.errorMessage;
         const types = this.state.types;
         const list = this.state.list;
+        const items = this.state.items;
         return (
             <div className="list-view">
                 <h2>List name: {list && list.groceryListName}</h2>
@@ -191,6 +237,27 @@ export class SingleGroceryListView extends React.Component<RouteComponentProps<R
                         </CardBody>
                     </Card>
                 </div>
+                <br/>                   
+                <Table>
+                    <thead>
+                    <tr>
+                        <th>Item Name</th>
+                        <th>Item Type</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            items && items.map(item =>
+                                <tr key={item.groceryItemId}>
+                                    <td>{item.groceryItemName}</td>
+                                    <td>{item.groceryItemType.groceryTypeName}</td>
+                                    <td className="delete-item"><Button size="sm" color="success" onClick={()=> this.addItem(item.groceryItemId)}>+Add</Button></td>
+                                </tr>
+                            )
+                        }
+                    </tbody>
+                </Table>
             </div>
         )
     }

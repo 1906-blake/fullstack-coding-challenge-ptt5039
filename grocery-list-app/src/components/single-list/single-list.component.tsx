@@ -174,7 +174,6 @@ export class SingleGroceryListView extends React.Component<RouteComponentProps<R
 
         const list = await resp.json();
 
-        console.log(list)
         if(!list) {
             
         }else{
@@ -215,7 +214,7 @@ export class SingleGroceryListView extends React.Component<RouteComponentProps<R
 
                 <div className="create-new-list">
                     <Card>
-                        <CardHeader tag="h3">Create a new list</CardHeader>
+                        <CardHeader tag="h3">Create a new item</CardHeader>
                         <CardBody>
                             <Form onSubmit={this.submit}>
                                 <p className="success-message">{this.state.successMessage}</p>
